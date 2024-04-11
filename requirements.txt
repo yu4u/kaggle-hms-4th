@@ -13,3 +13,4 @@ timm
 albumentations
 librosa
 pyarrow
+einops
