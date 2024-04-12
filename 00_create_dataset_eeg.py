@@ -3,6 +3,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from scipy.signal import butter, lfilter
 
 
 def get_args():
@@ -10,6 +11,12 @@ def get_args():
     parser.add_argument("--dirname", type=str, default="train_npzs")
     args = parser.parse_args()
     return args
+
+
+def butter_bandpass_filter(data, lowcut=0.5, highcut=20, fs=200, order=2):
+    b, a = butter_bandpass(lowcut, highcut, fs, order=order)
+    y = lfilter(b, a, data).astype(np.float32)
+    return y
 
 
 def extract_eeg_feat(eeg):
@@ -52,6 +59,7 @@ def main():
         eeg_path = eeg_dir.joinpath(f"{eeg_id}.parquet")
         eeg = pd.read_parquet(eeg_path)
         eeg.fillna(eeg.mean(), inplace=True)
+        eeg = eeg.apply(lambda x: butter_bandpass_filter(x), axis=0)
 
         for idx, row in sub_df.iterrows():
             eeg_sub_id = row["eeg_sub_id"]
