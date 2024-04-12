@@ -13,6 +13,14 @@ def get_args():
     return args
 
 
+def butter_bandpass(lowcut, highcut, fs, order=2):
+    nyq = 0.5 * fs
+    low = lowcut / nyq
+    high = highcut / nyq
+    b, a = butter(order, [low, high], btype="band")
+    return b, a
+
+
 def butter_bandpass_filter(data, lowcut=0.5, highcut=20, fs=200, order=2):
     b, a = butter_bandpass(lowcut, highcut, fs, order=order)
     y = lfilter(b, a, data).astype(np.float32)
