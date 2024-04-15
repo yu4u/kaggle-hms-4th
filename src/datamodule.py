@@ -45,7 +45,7 @@ class MyDataModule(LightningDataModule):
             return
 
         df = pd.read_csv(self.root_dir.joinpath("train.csv"))
-        df["num_votes"] = df.values[:, -6:].sum(-1)
+        df["num_votes"] = pd.to_numeric(df.values[:, -6:].sum(-1))
         train_patient_ids, val_patient_ids = self.get_split(df)
         npz_dir = self.root_dir.joinpath("train_npzs")
         train_eeg_id_to_npz_paths = defaultdict(list)
