@@ -52,7 +52,7 @@ def main():
 
     lr_monitor = LearningRateMonitor()
     dirpath = "saved_models/" + cfg.wandb.name if cfg.wandb.name else None
-    finename = f"{cfg.model.arch}__{cfg.model.backbone}__fold_{cfg.data.fold_id}"
+    finename = f"{cfg.wandb.name}__fold{cfg.data.fold_id}"
     save_on_train_epoch_end = True if cfg.data.train_all else None
     checkpoint_callback = ModelCheckpoint(dirpath=dirpath, monitor="val_loss", save_last=True, mode="min",
                                           filename=finename + "_{epoch:03d}_{val_loss:.4f}", save_weights_only=True,

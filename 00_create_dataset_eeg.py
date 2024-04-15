@@ -67,7 +67,7 @@ def main():
         eeg_path = eeg_dir.joinpath(f"{eeg_id}.parquet")
         eeg = pd.read_parquet(eeg_path)
         eeg.fillna(eeg.mean(), inplace=True)
-        eeg = eeg.apply(lambda x: butter_bandpass_filter(x), axis=0)
+        # eeg = eeg.apply(lambda x: butter_bandpass_filter(x), axis=0)
 
         for idx, row in sub_df.iterrows():
             eeg_sub_id = row["eeg_sub_id"]
